@@ -1,14 +1,13 @@
 package org.ait.project.buddytest.shared.openfeign.jsonplaceholder;
 
-import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.request.CreateCustomerRequest;
-import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.response.CustomerResponse;
+import java.util.List;
+import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.request.CreatePostRequest;
+import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.response.PostResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 @FeignClient(
     value = "jsonplaceholder-client",
@@ -18,12 +17,11 @@ import java.util.List;
 public interface JsonPlaceHolderClient {
 
   @GetMapping("/posts")
-  List<CustomerResponse> getListCustomer();
+  List<PostResponse> getListPost();
 
   @GetMapping("/posts/{id}")
-  CustomerResponse getCustomerById(@PathVariable String id);
+  PostResponse getPostById(@PathVariable String id);
 
   @PostMapping("/posts")
-  CustomerResponse createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest);
-
+  PostResponse createPost(@RequestBody CreatePostRequest createPostRequest);
 }

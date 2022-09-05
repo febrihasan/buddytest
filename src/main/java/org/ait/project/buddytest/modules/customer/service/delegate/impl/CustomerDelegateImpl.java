@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,14 +18,13 @@ public class CustomerDelegateImpl implements CustomerDelegate {
 
   private final CustomerRepository repository;
 
-  @Override
   public List<Customer> getAllCustomers() {
     return repository.findAll();
   }
 
   @Override
-  public Page<Customer> getAllCustomersPage(Pageable pageable) {
-    return repository.findAll(pageable);
+  public Page<Customer> getAllCustomersWithPage(Pageable page) {
+    return repository.findAll(page);
   }
 
   @Override
@@ -41,4 +41,10 @@ public class CustomerDelegateImpl implements CustomerDelegate {
   public Customer save(Customer customer) {
     return repository.save(customer);
   }
+
+  @Override
+  public void deleteById(Long id) {
+    repository.deleteById(id);
+  }
+
 }

@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 public class PaginationConfig {
 	@JsonProperty("page")
 	private int page;
+
 	@JsonProperty("size")
 	private int size;
+
 	@JsonProperty("total")
 	private long total;
 }

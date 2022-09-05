@@ -1,10 +1,11 @@
 package org.ait.project.buddytest.modules.customer.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.ait.project.buddytest.shared.constant.entities.BaseEntity;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +13,11 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column(name = "name", length = 100)
     private String name;

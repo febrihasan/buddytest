@@ -1,12 +1,11 @@
 package org.ait.project.buddytest.shared.utils;
 
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 import org.ait.project.buddytest.shared.dto.template.ResponseSchema;
+import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor

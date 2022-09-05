@@ -1,25 +1,25 @@
 package org.ait.project.buddytest.shared.utils;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseError;
-import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.transform.ResponseTemplateTransform;
+import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
+import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ResponseHelper {
 
-  private ResponseMessageHelper responseMessageHelper;
+  private final ResponseMessageHelper responseMessageHelper;
 
-  private ResponseTemplateTransform responseTransform;
+  private final ResponseTemplateTransform responseTransform;
 
   /**
    * a utility function that is used to generate detailed responses based on the AIT Standard
@@ -29,7 +29,7 @@ public class ResponseHelper {
    * @return ResponseEntity contain Template Response based on AIT Standard
    */
   public <T> ResponseEntity<ResponseTemplate<ResponseDetail<T>>> createResponseDetail(
-          ResponseEnum responseEnum, T body) {
+      ResponseEnum responseEnum, T body) {
     return ResponseEntity.status(responseEnum.getHttpStatus())
         .body(
             responseTransform.templateDetail(responseMessageHelper.getResponseSchema(responseEnum), body)

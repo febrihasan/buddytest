@@ -1,10 +1,10 @@
 package org.ait.project.buddytest.shared.openfeign.jsonplaceholder;
 
-import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.request.CreateCustomerRequest;
-import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.response.CustomerResponse;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+
+import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.request.CreatePostRequest;
+import org.ait.project.buddytest.shared.openfeign.jsonplaceholder.response.PostResponse;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JsonPlaceHolderClientFallback implements JsonPlaceHolderClient{
@@ -14,18 +14,17 @@ public class JsonPlaceHolderClientFallback implements JsonPlaceHolderClient{
    * */
 
   @Override
-  public List<CustomerResponse> getListCustomer() {
+  public List<PostResponse> getListPost() {
     return null;
   }
 
   @Override
-  public CustomerResponse getCustomerById(String id) {
+  public PostResponse getPostById(String id) {
     return null;
   }
 
   @Override
-  public CustomerResponse createCustomer(CreateCustomerRequest createCustomerRequest) {
+  public PostResponse createPost(CreatePostRequest createPostRequest) {
     return null;
   }
-
 }

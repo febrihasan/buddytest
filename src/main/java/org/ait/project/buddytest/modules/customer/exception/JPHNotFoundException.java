@@ -8,7 +8,7 @@ import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 public class JPHNotFoundException extends ModuleException {
 
   public JPHNotFoundException() {
-    super(ResponseEnum.CUSTOMER_NOT_FOUND);
+    super(ResponseEnum.JSON_PLACE_HOLDER_CUSTOMER_NOT_FOUND);
     log.error("Customer not found");
   }
 }

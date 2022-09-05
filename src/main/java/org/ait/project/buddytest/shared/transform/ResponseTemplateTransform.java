@@ -1,14 +1,19 @@
 package org.ait.project.buddytest.shared.transform;
 
 
-import org.ait.project.buddytest.shared.dto.template.*;
+import java.util.List;
+import java.util.Optional;
+
+import org.ait.project.buddytest.shared.dto.template.PaginationConfig;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
+import org.ait.project.buddytest.shared.dto.template.ResponseSchema;
+import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
+import org.ait.project.buddytest.shared.dto.template.ResponseCollection;
+import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
-import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface ResponseTemplateTransform {

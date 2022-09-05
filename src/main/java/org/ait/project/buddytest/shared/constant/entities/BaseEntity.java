@@ -8,11 +8,6 @@ import java.time.ZonedDateTime;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
     @CreationTimestamp
     @Column(name = "created_at")
     private ZonedDateTime createdAt;

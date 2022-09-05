@@ -1,37 +1,50 @@
-# server port
+#Default Properties
+
 server:
-  port: 9090
+  servlet:
+    context-path: /api
 
-# database connection
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/buddytest
-    username: "postgres"
-    password: "postgres"
-
-  # flyway migration
+  #profile active
+  #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
+  profiles:
+    active: dev
+  #default value flyway set to false
   flyway:
-    enabled: true
+    enabled: false
+  jackson:
+    time-zone: Asia/Jakarta
 
-# springdoc swagger ui
-springdoc:
-  show-actuator: true
-  swagger-ui:
-    path: "/swagger-ui.html"
-
-# logbook zalando
+#logbook style: https://github.com/zalando/logbook#configuration
 logbook:
   format:
     style: splunk
 
 logging:
   level:
-    # set for openfeign write into log
-    org.ait.project.buddytest.shared.openfeign: DEBUG
-    # set for logbook write into log
+    #set for openfeign write into log
+    org.ait.project.guideline.example.shared.openfeign: DEBUG
+    #set for logbook write into log
     org.zalando.logbook: TRACE
 
-restclient:
-  url:
-    jsonplaceholder-client: https://jsonplaceholder.typicode.com
-    reqres-client: https://reqres.in/api
+feign:
+  #active openfeign fallback set true on circuit breaker and hystrix
+  circuitbreaker:
+    enabled: true
+  hystrix:
+    enabled: true
+  #client openfeign log set
+  client:
+    config:
+      jsonplaceholder-client:
+        loggerLevel: full
+      reqres-client:
+        loggerLevel: full
+
+#turn off time out hystrix, because for default this config if true set timeout to 15 sec, and openfeign timeout unused
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
