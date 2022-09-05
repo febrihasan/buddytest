@@ -1,0 +1,37 @@
+# server port
+server:
+  port: 9090
+
+# database connection
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/buddytest
+    username: "postgres"
+    password: "postgres"
+
+  # flyway migration
+  flyway:
+    enabled: true
+
+# springdoc swagger ui
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    path: "/swagger-ui.html"
+
+# logbook zalando
+logbook:
+  format:
+    style: splunk
+
+logging:
+  level:
+    # set for openfeign write into log
+    org.ait.project.buddytest.shared.openfeign: DEBUG
+    # set for logbook write into log
+    org.zalando.logbook: TRACE
+
+restclient:
+  url:
+    jsonplaceholder-client: https://jsonplaceholder.typicode.com
+    reqres-client: https://reqres.in/api
