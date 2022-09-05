@@ -11,6 +11,7 @@ public enum ResponseEnum {
   JSON_PLACE_HOLDER_POST_NOT_FOUND("PMRK-0001", "jph.post.not.found", HttpStatus.NOT_FOUND),
   JSON_PLACE_HOLDER_CUSTOMER_NOT_FOUND("PMRK-0002", "jph.customer.not.found", HttpStatus.NOT_FOUND),
 
+  JSON_PLACE_HOLDER_PRODUCT_NOT_FOUND("PMRK-0003", "jph.product.not.found", HttpStatus.NOT_FOUND),
   INVALID_PARAM("PMRK-0009", "invalid.param", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("PMRK-9999", "internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR),
 

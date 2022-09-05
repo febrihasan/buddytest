@@ -1,9 +1,11 @@
 package org.ait.project.buddytest.modules.customer.service.internal.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.modules.customer.dto.CustomerDto;
-import org.ait.project.buddytest.modules.customer.transform.CustomerTransform;
+import org.ait.project.buddytest.modules.customer.dto.request.CustomerRequestDto;
+import org.ait.project.buddytest.modules.customer.dto.response.CustomerResponseDto;
 import org.ait.project.buddytest.modules.customer.model.entity.Customer;
+import org.ait.project.buddytest.modules.customer.model.transform.CustomerTransform;
 import org.ait.project.buddytest.modules.customer.service.delegate.CustomerDelegate;
 import org.ait.project.buddytest.modules.customer.service.internal.CustomerService;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
@@ -15,45 +17,98 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+/**.
+ * Customer Service Implements
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
+    /**.
+     * Get function ResponseHelper
+     */
     private final ResponseHelper responseHelper;
+
+    /**.
+     * Get function CustomerDelegate
+     */
     private final CustomerDelegate customerDelegate;
 
+    /**.
+     * Transform model mapper from entity to DTO or DTO to entity
+     */
     private final CustomerTransform customerTransform;
 
-    public ResponseEntity<ResponseTemplate<ResponseList<CustomerDto>>> getAllCustomers() {
+    /**.
+     * Get all data customers
+     * @return all data customers
+     */
+    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>> getAllCustomers() {
         List<Customer> customers = customerDelegate.getAllCustomers();
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null,
                 customerTransform.customerListToCustomerDtoList(customers));
     }
 
-    public ResponseEntity<ResponseTemplate<ResponseList<CustomerDto>>> getAllCustomersWithPage(Pageable page) {
-        Page<Customer> customersWithPage = customerDelegate.getAllCustomersWithPage(page);
-        return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, customersWithPage,
-                customerTransform.customerListToCustomerDtoList(customersWithPage.getContent()));
+    /**.
+     * Get all data customers with page
+     * @param page number
+     * @return all data customers with pagination
+     */
+    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>>
+    getAllCustomersWithPage(final Pageable page) {
+        Page<Customer> customersWithPage = customerDelegate
+                .getAllCustomersWithPage(page);
+        return responseHelper
+                .createResponseCollection(
+                        ResponseEnum.SUCCESS,
+                        customersWithPage,
+                customerTransform
+                        .customerListToCustomerDtoList(
+                                customersWithPage.getContent()));
     }
 
-    public CustomerDto getCustomerById(Long id) {
-        return customerTransform.customerToCustomerDto(customerDelegate.getCustomerById(id));
+    /**.
+     * Get a data customer
+     * @param id customer
+     * @return data customer
+     */
+    public CustomerResponseDto getCustomerById(final Long id) {
+        return customerTransform
+                .customerToCustomerDto(customerDelegate.getCustomerById(id));
     }
 
-    public void createCustomer(CustomerDto customerDto) {
-        Customer customer = customerTransform.customerDtoToCustomer(customerDto);
-        customerTransform.customerToCustomerDto(customerDelegate.save(customer));
+
+    /**.
+     * Create a new customer
+     * @param customerDto customer
+     */
+    public void createCustomer(final CustomerRequestDto customerDto) {
+        Customer customer = customerTransform
+                .customerDtoToCustomer(customerDto);
+        customerTransform
+                .customerToCustomerDto(customerDelegate.save(customer));
     }
 
-    public CustomerDto updateCustomer(CustomerDto customerDto, Long id) {
-        Customer customer = customerTransform.updateCustomerFromCustomerDto(customerDto, customerDelegate.getCustomerById(id));
+    /**.
+     * Update data customer
+     * @param id customer
+     * @param customerDto payload customer
+     * @return data customer
+     */
+    public CustomerResponseDto updateCustomer(final CustomerRequestDto customerDto, final Long id) {
+        Customer customer = customerTransform.updateCustomerFromCustomerDto(
+                customerDto,
+                customerDelegate.getCustomerById(id));
         customer.setId(id);
-        return customerTransform.customerToCustomerDto(customerDelegate.save(customer));
+        return customerTransform
+                .customerToCustomerDto(customerDelegate.save(customer));
     }
 
-    public void deleteCustomer(Long id) {
+    /**.
+     * Delete a customer
+     * @param id customer
+     */
+    public void deleteCustomer(final Long id) {
         customerDelegate.deleteById(id);
     }
 

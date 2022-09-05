@@ -1,5 +1,6 @@
-package org.ait.project.buddytest.modules.customer.model.entity;
+package org.ait.project.buddytest.modules.product.model.entity;
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,30 +13,27 @@ import lombok.NoArgsConstructor;
 import org.ait.project.buddytest.shared.constant.entities.BaseEntity;
 
 /**.
- * Class Entity Customer
+ * Class Entity Product
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "customer")
-public class Customer extends BaseEntity {
+@Table(name = "product")
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", length = 100)
-    private String name;
+    @Column(name = "type", length = 20)
+    private String type;
 
-    @Column(name = "email", length = 100)
-    private String email;
+    @Column(name = "seri_name", length = 50)
+    private String seriName;
 
-    @Column(name = "phone_number", length = 20)
-    private String phoneNumber;
-
-    @Column(name = "address")
-    private String address;
+    @Column(name = "price", length = 20)
+    private BigDecimal price;
 
 }

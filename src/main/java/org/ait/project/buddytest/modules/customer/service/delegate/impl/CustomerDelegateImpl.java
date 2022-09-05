@@ -1,5 +1,6 @@
 package org.ait.project.buddytest.modules.customer.service.delegate.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.buddytest.modules.customer.exception.JPHNotFoundException;
 import org.ait.project.buddytest.modules.customer.model.entity.Customer;
@@ -9,9 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
+/**.
+ * Class Customer Delegate Implements
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomerDelegateImpl implements CustomerDelegate {
@@ -23,27 +24,27 @@ public class CustomerDelegateImpl implements CustomerDelegate {
   }
 
   @Override
-  public Page<Customer> getAllCustomersWithPage(Pageable page) {
+  public Page<Customer> getAllCustomersWithPage(final Pageable page) {
     return repository.findAll(page);
   }
 
   @Override
-  public Customer getCustomerById(Long id) {
+  public Customer getCustomerById(final Long id) {
     return repository.findById(id).orElseThrow(JPHNotFoundException::new);
   }
 
   @Override
-  public List<Customer> saveAll(List<Customer> customerList) {
+  public List<Customer> saveAll(final List<Customer> customerList) {
     return repository.saveAll(customerList);
   }
 
   @Override
-  public Customer save(Customer customer) {
+  public Customer save(final Customer customer) {
     return repository.save(customer);
   }
 
   @Override
-  public void deleteById(Long id) {
+  public void deleteById(final Long id) {
     repository.deleteById(id);
   }
 
