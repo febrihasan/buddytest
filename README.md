@@ -1,5 +1,5 @@
 # Project Name
-Buddy Test Project v1.0
+Buddy Test Online Shop v1.0
 
 # Spesification
 - Programming Language <B> Java Version 8 </B>
