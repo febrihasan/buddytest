@@ -91,15 +91,16 @@ public class InventoryServiceImpl implements InventoryService {
 
     /**.
      * Create a new inventory
-     * @param inventoryDto inventory
+     * @param inventoryDto
+     * @return new data inventory
      */
-    public void createInventory(final InventoryRequestDto inventoryDto) {
+    public InventoryResponseDto createInventory(final InventoryRequestDto inventoryDto) {
         Inventory inventory = inventoryTransform
                 .inventoryDtoToInventory(inventoryDto);
-        inventoryTransform
-                .inventoryToInventoryDto(inventoryDelegate.save(inventory));
         productDelegate
                 .updateStockProduct(Boolean.TRUE, inventory.getProductId());
+        return inventoryTransform
+                .inventoryToInventoryDto(inventoryDelegate.save(inventory));
     }
 
     /**.

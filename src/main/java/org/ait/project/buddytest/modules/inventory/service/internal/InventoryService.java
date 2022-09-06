@@ -20,7 +20,7 @@ public interface InventoryService {
 
     public InventoryResponseDto getInventoryById(Long id);
 
-    public void createInventory(InventoryRequestDto inventoryDto);
+    public InventoryResponseDto createInventory(InventoryRequestDto inventoryDto);
 
     public InventoryResponseDto updateInventory(InventoryRequestDto inventoryDto, Long id);
 

@@ -2,19 +2,26 @@ package org.ait.project.buddytest.modules.order.service.internal;
 
 import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponseDto;
+import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
+import org.ait.project.buddytest.shared.dto.template.ResponseList;
+import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
+import org.springframework.http.ResponseEntity;
 
 /**.
  * Interface Order Details Service
  */
 public interface OrderDetailsService {
 
-    public OrderDetailsResponseDto getOrderDetailById(Long id);
+    public ResponseEntity<ResponseTemplate<ResponseList<OrderDetailsResponseDto>>>
+    getAllOrderDetails(Long orderId);
 
-    public void createOrderDetail(OrderDetailsRequestDto orderDetailDto);
+    public OrderDetailsResponseDto getOrderDetailById(Long orderId, Long id);
+
+    public OrderDetailsResponseDto createOrderDetail(OrderDetailsRequestDto orderDetailDto, Long orderId);
 
     public OrderDetailsResponseDto updateOrderDetail(
-            OrderDetailsRequestDto orderDetailDto, Long id);
+            OrderDetailsRequestDto orderDetailDto, Long orderId, Long id);
 
-    public void deleteOrderDetail(Long id);
+    public void deleteOrderDetail(Long orderId, Long id);
 
 }

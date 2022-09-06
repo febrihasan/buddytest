@@ -20,7 +20,7 @@ public interface CustomerService {
 
     public CustomerResponseDto getCustomerById(Long id);
 
-    public void createCustomer(CustomerRequestDto customerDto);
+    public CustomerResponseDto createCustomer(CustomerRequestDto customerDto);
 
     public CustomerResponseDto updateCustomer(CustomerRequestDto customerDto, Long id);
 

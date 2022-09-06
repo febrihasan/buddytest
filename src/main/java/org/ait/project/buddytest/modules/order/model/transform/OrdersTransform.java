@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OrdersTransform {
     Orders ordersDtoToOrders(OrdersRequestDto ordersDto);
-    OrderDetails orderDetailsDtoToOrderDetails(OrdersRequestDto.OrderDetailsDto orderDetailsDto);
+    OrderDetails orderDetailsDtoToOrderDetails(OrdersRequestDto orderDetailsDto);
 
-    OrdersResponseDto ordersToOrdersDto(Orders orders);
+    OrdersResponseDto orderToOrderDto(Orders orders);
 
     List<OrdersResponseDto> ordersToOrdersDto(List<Orders> orders);
 

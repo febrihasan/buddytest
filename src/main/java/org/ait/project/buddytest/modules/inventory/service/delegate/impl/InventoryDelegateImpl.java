@@ -35,6 +35,16 @@ public class InventoryDelegateImpl implements InventoryDelegate {
   }
 
   @Override
+  public Inventory getInventoryByProductId(final Long productId) {
+    return repository.findByProductId(productId);
+  }
+
+  @Override
+  public void updateQuantity(final Long remaining, final Long productId) {
+    repository.updateQuantity(remaining, productId);
+  }
+
+  @Override
   public List<Inventory> saveAll(final List<Inventory> inventoryList) {
     return repository.saveAll(inventoryList);
   }

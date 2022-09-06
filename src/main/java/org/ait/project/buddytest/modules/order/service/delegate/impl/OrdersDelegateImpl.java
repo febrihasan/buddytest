@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**.
@@ -32,6 +33,11 @@ public class OrdersDelegateImpl implements OrdersDelegate {
   @Override
   public Orders getOrderById(final Long id) {
     return repository.findById(id).orElseThrow(JPHNotFoundException::new);
+  }
+
+  @Override
+  public void updateTotalAmount(final BigDecimal totalAmount, final Long id) {
+    repository.updateTotalAmount(totalAmount, id);
   }
 
   @Override

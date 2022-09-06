@@ -1,12 +1,17 @@
 package org.ait.project.buddytest.modules.order.service.internal.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.request.OrdersRequestDto;
+import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponseDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
+import org.ait.project.buddytest.modules.order.model.entity.OrderDetails;
 import org.ait.project.buddytest.modules.order.model.entity.Orders;
+import org.ait.project.buddytest.modules.order.model.transform.OrderDetailsTransform;
 import org.ait.project.buddytest.modules.order.model.transform.OrdersTransform;
 import org.ait.project.buddytest.modules.order.service.delegate.OrderDetailsDelegate;
 import org.ait.project.buddytest.modules.order.service.delegate.OrdersDelegate;
+import org.ait.project.buddytest.modules.order.service.internal.OrderDetailsService;
 import org.ait.project.buddytest.modules.order.service.internal.OrdersService;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
@@ -17,7 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**.
  * class Orders Service Implements
@@ -42,9 +49,19 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrderDetailsDelegate orderDetailsDelegate;
 
     /**.
+     * Get function OrderDetailsService
+     */
+    private final OrderDetailsService orderDetailsService;
+
+    /**.
      * Transform model mapper from entity to DTO or DTO to entity
      */
     private final OrdersTransform ordersTransform;
+
+    /**.
+     * Transform model mapper from entity to DTO or DTO to entity
+     */
+    private final OrderDetailsTransform orderDetailsTransform;
 
     /**.
      * Get all data orders
@@ -52,11 +69,18 @@ public class OrdersServiceImpl implements OrdersService {
      */
     public ResponseEntity<ResponseTemplate<ResponseList<OrdersResponseDto>>>
     getAllOrders() {
-        List<Orders> orders = ordersDelegate
-                .getAllOrders();
+        Long orderId = 0L;
+        List<Orders> orders = ordersDelegate.getAllOrders();
+        List<OrdersResponseDto> ordersDto = ordersTransform.ordersToOrdersDto(orders);
+        for (OrdersResponseDto orderDto : ordersDto) {
+            orderDto.setOrderDetails(orderDetailsTransform
+                    .orderDetailsToOrderDetailsDto(orderDetailsDelegate
+                            .getAllOrderDetails(orderDto.getId())));
+        }
+
         return responseHelper
                 .createResponseCollection(ResponseEnum.SUCCESS, null,
-                ordersTransform.ordersToOrdersDto(orders));
+                ordersDto);
     }
 
     /**.
@@ -84,16 +108,27 @@ public class OrdersServiceImpl implements OrdersService {
      */
     public OrdersResponseDto getOrderById(final Long id) {
         return ordersTransform
-                .ordersToOrdersDto(ordersDelegate.getOrderById(id));
+                .orderToOrderDto(ordersDelegate.getOrderById(id));
     }
 
     /**.
      * Create a new order
      * @param ordersDto
+     * @return new data order
      */
-    public void createOrder(final OrdersRequestDto ordersDto) {
+    public OrdersResponseDto createOrder(final OrdersRequestDto ordersDto) {
         Orders orders = ordersTransform.ordersDtoToOrders(ordersDto);
-        ordersDelegate.save(orders);
+        Orders order = ordersDelegate.save(orders);
+        ordersDto.getOrderDetails()
+                .forEach(orderDetailsDto ->
+                    orderDetailsService
+                        .createOrderDetail(orderDetailsDto, order.getId()));
+
+        OrdersResponseDto ordersResponseDto = ordersTransform.orderToOrderDto(orders);
+        ordersResponseDto.setOrderDetails(orderDetailsTransform
+                .orderDetailsToOrderDetailsDto(orderDetailsDelegate
+                        .getAllOrderDetails(ordersResponseDto.getId())));
+        return ordersResponseDto;
     }
 
     /**.
@@ -110,7 +145,7 @@ public class OrdersServiceImpl implements OrdersService {
                         ordersDelegate.getOrderById(id));
         order.setId(id);
         return ordersTransform
-                .ordersToOrdersDto(ordersDelegate.save(order));
+                .orderToOrderDto(ordersDelegate.save(order));
     }
 
     /**.

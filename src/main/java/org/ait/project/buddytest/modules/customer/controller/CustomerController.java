@@ -70,8 +70,8 @@ public class CustomerController {
     @Operation(summary = "Create new customer",
             description = "Create a new customer")
     @PostMapping(PathCustomerAPIs.CREATE)
-    public void createCustomer(final @RequestBody CustomerRequestDto customerDto) {
-        customerService.createCustomer(customerDto);
+    public CustomerResponseDto createCustomer(final @RequestBody CustomerRequestDto customerDto) {
+        return customerService.createCustomer(customerDto);
     }
 
     /**.

@@ -63,12 +63,13 @@ public class InventoryController {
     /**.
      *  Api for Create a new inventory
      * @param inventoryDto
+     * @return new data inventory
      */
     @Operation(summary = "Create new inventory",
             description = "Create a new inventory")
     @PostMapping(PathInventoryAPIs.CREATE)
-    public void createInventory(final @RequestBody InventoryRequestDto inventoryDto) {
-        inventoryService.createInventory(inventoryDto);
+    public InventoryResponseDto createInventory(final @RequestBody InventoryRequestDto inventoryDto) {
+        return inventoryService.createInventory(inventoryDto);
     }
 
     /**.

@@ -9,7 +9,11 @@ import java.util.List;
 
 public interface OrderDetailsDelegate {
 
+  List<OrderDetails> getAllOrderDetails(Long orderId);
+
   OrderDetails getOrderDetailById(Long id);
+
+  List<OrderDetails> getOrderDetailByOrderId(Long id);
 
   List<OrderDetails> saveAll(List<OrderDetails> orderDetails);
 

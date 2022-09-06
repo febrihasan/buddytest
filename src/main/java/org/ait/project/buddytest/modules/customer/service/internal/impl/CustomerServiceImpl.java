@@ -80,12 +80,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**.
      * Create a new customer
-     * @param customerDto customer
+     * @param customerDto
+     * @return new data customer
      */
-    public void createCustomer(final CustomerRequestDto customerDto) {
+    public CustomerResponseDto createCustomer(final CustomerRequestDto customerDto) {
         Customer customer = customerTransform
                 .customerDtoToCustomer(customerDto);
-        customerTransform
+        return customerTransform
                 .customerToCustomerDto(customerDelegate.save(customer));
     }
 

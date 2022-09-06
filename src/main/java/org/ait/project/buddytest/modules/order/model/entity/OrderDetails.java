@@ -6,7 +6,6 @@ import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ait.project.buddytest.modules.product.model.entity.Product;
 import org.ait.project.buddytest.shared.constant.entities.BaseEntity;
 
 /**.

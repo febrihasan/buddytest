@@ -2,12 +2,12 @@ package org.ait.project.buddytest.modules.order.model.entity;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ait.project.buddytest.modules.customer.model.entity.Customer;
 import org.ait.project.buddytest.shared.constant.entities.BaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
 

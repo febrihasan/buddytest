@@ -4,6 +4,7 @@ import org.ait.project.buddytest.modules.order.model.entity.Orders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrdersDelegate {
@@ -13,6 +14,8 @@ public interface OrdersDelegate {
   Page<Orders> getAllOrdersWithPage(Pageable page);
 
   Orders getOrderById(Long id);
+
+  void updateTotalAmount(BigDecimal totalAmount, Long id);
 
   List<Orders> saveAll(List<Orders> orders);
 

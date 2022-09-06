@@ -14,6 +14,10 @@ public interface InventoryDelegate {
 
   Inventory getInventoryById(Long id);
 
+  Inventory getInventoryByProductId(Long productId);
+
+  void updateQuantity(Long remaining, Long productId);
+
   List<Inventory> saveAll(List<Inventory> inventories);
 
   Inventory save(Inventory inventory);

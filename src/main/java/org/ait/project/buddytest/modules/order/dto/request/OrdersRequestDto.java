@@ -22,22 +22,5 @@ public class OrdersRequestDto {
     @JsonProperty("orderNumber")
     private final String orderNumber;
     @JsonProperty("orderDetails")
-    private final List<OrderDetailsDto> orderDetails;
-
-    /**.
-     * Class Order Detail DTO
-     */
-    @Data
-    public static class OrderDetailsDto {
-        @JsonProperty("id")
-        private final Long id;
-        @JsonProperty("amount")
-        private final BigDecimal amount;
-        @JsonProperty("price")
-        private final BigDecimal price;
-        @JsonProperty("quantity")
-        private final Long quantity;
-        @JsonProperty("product_id")
-        private final Long productId;
-    }
+    private final List<OrderDetailsRequestDto> orderDetails;
 }

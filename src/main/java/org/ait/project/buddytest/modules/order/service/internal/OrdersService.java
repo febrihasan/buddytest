@@ -20,7 +20,7 @@ public interface OrdersService {
 
     public OrdersResponseDto getOrderById(Long id);
 
-    public void createOrder(OrdersRequestDto orderDto);
+    public OrdersResponseDto createOrder(OrdersRequestDto orderDto);
 
     public OrdersResponseDto updateOrder(OrdersRequestDto orderDto, Long id);
 
