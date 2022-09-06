@@ -84,9 +84,11 @@ public class ProductServiceImpl implements ProductService {
      * Create a new product
      * @param productDto product
      */
-    public void createProduct(final ProductRequestDto productDto) {
-        Product product = productTransform.productDtoToProduct(productDto);
-        productTransform.productToProductDto(productDelegate.save(product));
+    public ProductResponseDto createProduct(final ProductRequestDto productDto) {
+        Product product = productTransform
+                .productDtoToProduct(productDto);
+        return productTransform
+                .productToProductDto(productDelegate.save(product));
     }
 
     /**.

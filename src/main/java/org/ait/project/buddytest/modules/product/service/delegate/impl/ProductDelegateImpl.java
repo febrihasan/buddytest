@@ -48,4 +48,9 @@ public class ProductDelegateImpl implements ProductDelegate {
     repository.deleteById(id);
   }
 
+  @Override
+  public void updateStockProduct(Boolean flag, final Long id) {
+    repository.updateStockProduct(flag, id);
+  }
+
 }

@@ -71,8 +71,8 @@ public class ProductController {
     @Operation(summary = "Create new product",
             description = "Create a new product")
     @PostMapping(PathProductAPIs.CREATE)
-    public void createproduct(final @RequestBody ProductRequestDto productDto) {
-        productService.createProduct(productDto);
+    public ProductResponseDto createProduct(final @RequestBody ProductRequestDto productDto) {
+        return productService.createProduct(productDto);
     }
 
     /**.

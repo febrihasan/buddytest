@@ -10,17 +10,14 @@ import java.math.BigDecimal;
  */
 @Data
 public class ProductResponseDto {
-
     @JsonProperty("id")
     private final Long id;
-
     @JsonProperty("type")
     private final String type;
-
     @JsonProperty("seriName")
     private final String seriName;
-
     @JsonProperty("price")
     private final BigDecimal price;
-
+    @JsonProperty("is_stock")
+    private final Boolean isStock;
 }

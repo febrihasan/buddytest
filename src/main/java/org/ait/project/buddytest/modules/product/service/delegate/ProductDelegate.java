@@ -20,4 +20,6 @@ public interface ProductDelegate {
 
   void deleteById(Long id);
 
+  void updateStockProduct(Boolean flag, Long id);
+
 }

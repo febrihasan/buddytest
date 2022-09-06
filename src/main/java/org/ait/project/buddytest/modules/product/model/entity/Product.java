@@ -36,4 +36,7 @@ public class Product extends BaseEntity {
     @Column(name = "price", length = 20)
     private BigDecimal price;
 
+    @Column(name = "is_stock")
+    private Boolean isStock;
+
 }

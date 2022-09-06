@@ -20,7 +20,7 @@ public interface ProductService {
 
     public ProductResponseDto getProductById(Long id);
 
-    public void createProduct(ProductRequestDto productDto);
+    public ProductResponseDto createProduct(ProductRequestDto productDto);
 
     public ProductResponseDto updateProduct(ProductRequestDto productDto, Long id);
 
