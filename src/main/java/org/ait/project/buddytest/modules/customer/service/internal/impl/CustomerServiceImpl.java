@@ -9,6 +9,7 @@ import org.ait.project.buddytest.modules.customer.model.transform.CustomerTransf
 import org.ait.project.buddytest.modules.customer.service.delegate.CustomerDelegate;
 import org.ait.project.buddytest.modules.customer.service.internal.CustomerService;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
@@ -43,7 +44,8 @@ public class CustomerServiceImpl implements CustomerService {
      * Get all data customers
      * @return all data customers
      */
-    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>> getAllCustomers() {
+    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>>
+    getAllCustomers() {
         List<Customer> customers = customerDelegate.getAllCustomers();
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null,
                 customerTransform.customerListToCustomerDtoList(customers));
@@ -72,9 +74,12 @@ public class CustomerServiceImpl implements CustomerService {
      * @param id customer
      * @return data customer
      */
-    public CustomerResponseDto getCustomerById(final Long id) {
-        return customerTransform
-                .customerToCustomerDto(customerDelegate.getCustomerById(id));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+    getCustomerById(final Long id) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        customerTransform
+                                .customerToCustomerDto(customerDelegate.getCustomerById(id)));
     }
 
 
@@ -83,11 +88,13 @@ public class CustomerServiceImpl implements CustomerService {
      * @param customerDto
      * @return new data customer
      */
-    public CustomerResponseDto createCustomer(final CustomerRequestDto customerDto) {
-        Customer customer = customerTransform
-                .customerDtoToCustomer(customerDto);
-        return customerTransform
-                .customerToCustomerDto(customerDelegate.save(customer));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+    createCustomer(final CustomerRequestDto customerDto) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        customerTransform
+                                .customerToCustomerDto(customerDelegate.save(customerTransform
+                                        .customerDtoToCustomer(customerDto))));
     }
 
     /**.
@@ -96,13 +103,16 @@ public class CustomerServiceImpl implements CustomerService {
      * @param customerDto payload customer
      * @return data customer
      */
-    public CustomerResponseDto updateCustomer(final CustomerRequestDto customerDto, final Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+    updateCustomer(final CustomerRequestDto customerDto, final Long id) {
         Customer customer = customerTransform.updateCustomerFromCustomerDto(
                 customerDto,
                 customerDelegate.getCustomerById(id));
         customer.setId(id);
-        return customerTransform
-                .customerToCustomerDto(customerDelegate.save(customer));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        customerTransform
+                                .customerToCustomerDto(customerDelegate.save(customer)));
     }
 
     /**.

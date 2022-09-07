@@ -6,6 +6,7 @@ import org.ait.project.buddytest.modules.customer.common.PathCustomerAPIs;
 import org.ait.project.buddytest.modules.customer.dto.request.CustomerRequestDto;
 import org.ait.project.buddytest.modules.customer.dto.response.CustomerResponseDto;
 import org.ait.project.buddytest.modules.customer.service.internal.CustomerService;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,8 @@ public class CustomerController {
     @Operation(summary = "Get all customers",
             description = "Retrieve a list of all customers")
     @GetMapping(PathCustomerAPIs.FIND_ALL)
-    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>> getAllCustomers() {
+    public ResponseEntity<ResponseTemplate<ResponseList<CustomerResponseDto>>>
+        getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
@@ -59,7 +61,8 @@ public class CustomerController {
     @Operation(summary = "Get customer by id",
             description = "Retrieves a spesific customer by id")
     @GetMapping(PathCustomerAPIs.FIND_ONE)
-    public CustomerResponseDto getCustomerById(final @PathVariable Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+        getCustomerById(final @PathVariable Long id) {
         return customerService.getCustomerById(id);
     }
 
@@ -70,7 +73,8 @@ public class CustomerController {
     @Operation(summary = "Create new customer",
             description = "Create a new customer")
     @PostMapping(PathCustomerAPIs.CREATE)
-    public CustomerResponseDto createCustomer(final @RequestBody CustomerRequestDto customerDto) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+        createCustomer(final @RequestBody CustomerRequestDto customerDto) {
         return customerService.createCustomer(customerDto);
     }
 
@@ -82,7 +86,8 @@ public class CustomerController {
     @Operation(summary = "Update customer",
             description = "Update a customer")
     @PutMapping(PathCustomerAPIs.UPDATE)
-    public CustomerResponseDto updateCustomer(final @RequestBody CustomerRequestDto customerDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<CustomerResponseDto>>>
+        updateCustomer(final @RequestBody CustomerRequestDto customerDto,
                                       final @PathVariable Long id) {
         return customerService.updateCustomer(customerDto, id);
     }

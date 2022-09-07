@@ -6,6 +6,7 @@ import org.ait.project.buddytest.modules.product.common.PathProductAPIs;
 import org.ait.project.buddytest.modules.product.dto.request.ProductRequestDto;
 import org.ait.project.buddytest.modules.product.dto.response.ProductResponseDto;
 import org.ait.project.buddytest.modules.product.service.internal.ProductService;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.springframework.data.domain.Pageable;
@@ -60,7 +61,8 @@ public class ProductController {
     @Operation(summary = "Get product by id",
             description = "Retrieves a spesific product by id")
     @GetMapping(PathProductAPIs.FIND_ONE)
-    public ProductResponseDto getProductById(final @PathVariable Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+        getProductById(final @PathVariable Long id) {
         return productService.getProductById(id);
     }
 
@@ -71,7 +73,8 @@ public class ProductController {
     @Operation(summary = "Create new product",
             description = "Create a new product")
     @PostMapping(PathProductAPIs.CREATE)
-    public ProductResponseDto createProduct(final @RequestBody ProductRequestDto productDto) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+        createProduct(final @RequestBody ProductRequestDto productDto) {
         return productService.createProduct(productDto);
     }
 
@@ -83,7 +86,8 @@ public class ProductController {
     @Operation(summary = "Update product",
             description = "Update a product")
     @PutMapping(PathProductAPIs.UPDATE)
-    public ProductResponseDto updateproduct(final @RequestBody ProductRequestDto productDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+        updateproduct(final @RequestBody ProductRequestDto productDto,
                                     final @PathVariable Long id) {
         return productService.updateProduct(productDto, id);
     }

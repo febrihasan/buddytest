@@ -1,5 +1,6 @@
 package org.ait.project.buddytest.modules.inventory.service.internal.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.buddytest.modules.inventory.dto.request.InventoryRequestDto;
 import org.ait.project.buddytest.modules.inventory.dto.response.InventoryResponseDto;
@@ -7,9 +8,9 @@ import org.ait.project.buddytest.modules.inventory.model.entity.Inventory;
 import org.ait.project.buddytest.modules.inventory.model.transform.InventoryTransform;
 import org.ait.project.buddytest.modules.inventory.service.delegate.InventoryDelegate;
 import org.ait.project.buddytest.modules.inventory.service.internal.InventoryService;
-import org.ait.project.buddytest.modules.product.model.entity.Product;
 import org.ait.project.buddytest.modules.product.service.delegate.ProductDelegate;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
@@ -17,8 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**.
  * class Inventory Service Implements
@@ -84,9 +83,12 @@ public class InventoryServiceImpl implements InventoryService {
      * @param id inventory
      * @return data inventory
      */
-    public InventoryResponseDto getInventoryById(final Long id) {
-        return inventoryTransform
-                .inventoryToInventoryDto(inventoryDelegate.getInventoryById(id));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+    getInventoryById(final Long id) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        inventoryTransform
+                                .inventoryToInventoryDto(inventoryDelegate.getInventoryById(id)));
     }
 
     /**.
@@ -94,13 +96,16 @@ public class InventoryServiceImpl implements InventoryService {
      * @param inventoryDto
      * @return new data inventory
      */
-    public InventoryResponseDto createInventory(final InventoryRequestDto inventoryDto) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+    createInventory(final InventoryRequestDto inventoryDto) {
         Inventory inventory = inventoryTransform
                 .inventoryDtoToInventory(inventoryDto);
         productDelegate
                 .updateStockProduct(Boolean.TRUE, inventory.getProductId());
-        return inventoryTransform
-                .inventoryToInventoryDto(inventoryDelegate.save(inventory));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        inventoryTransform
+                                .inventoryToInventoryDto(inventoryDelegate.save(inventory)));
     }
 
     /**.
@@ -109,7 +114,8 @@ public class InventoryServiceImpl implements InventoryService {
      * @param inventoryDto payload inventory
      * @return data inventory
      */
-    public InventoryResponseDto updateInventory(final InventoryRequestDto inventoryDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+    updateInventory(final InventoryRequestDto inventoryDto,
                                             final Long id) {
         Inventory inventory = inventoryTransform
                 .updateInventoryFromInventoryDto(
@@ -117,12 +123,14 @@ public class InventoryServiceImpl implements InventoryService {
                         inventoryDelegate
                                 .getInventoryById(id));
         inventory.setId(id);
-        if(inventory.getAvailableQuantity() == 0L) {
+        if (inventory.getAvailableQuantity() == 0L) {
             productDelegate
                     .updateStockProduct(Boolean.FALSE, inventory.getProductId());
         }
-        return inventoryTransform
-                .inventoryToInventoryDto(inventoryDelegate.save(inventory));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        inventoryTransform
+                                .inventoryToInventoryDto(inventoryDelegate.save(inventory)));
     }
 
     /**.

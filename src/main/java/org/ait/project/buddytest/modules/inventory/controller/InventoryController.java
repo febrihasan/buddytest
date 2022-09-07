@@ -8,6 +8,7 @@ import org.ait.project.buddytest.modules.inventory.dto.response.InventoryRespons
 import org.ait.project.buddytest.modules.inventory.service.internal.InventoryService;
 import org.ait.project.buddytest.modules.product.common.PathProductAPIs;
 import org.ait.project.buddytest.modules.product.dto.request.ProductRequestDto;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +57,8 @@ public class InventoryController {
     @Operation(summary = "Get inventory by id",
             description = "Retrieves a spesific inventory by id")
     @GetMapping(PathInventoryAPIs.FIND_ONE)
-    public InventoryResponseDto getInventoryById(final @PathVariable Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+        getInventoryById(final @PathVariable Long id) {
         return inventoryService.getInventoryById(id);
     }
 
@@ -68,7 +70,8 @@ public class InventoryController {
     @Operation(summary = "Create new inventory",
             description = "Create a new inventory")
     @PostMapping(PathInventoryAPIs.CREATE)
-    public InventoryResponseDto createInventory(final @RequestBody InventoryRequestDto inventoryDto) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+        createInventory(final @RequestBody InventoryRequestDto inventoryDto) {
         return inventoryService.createInventory(inventoryDto);
     }
 
@@ -80,7 +83,8 @@ public class InventoryController {
     @Operation(summary = "Update inventory",
             description = "Update a inventory")
     @PutMapping(PathInventoryAPIs.UPDATE)
-    public InventoryResponseDto updateInventory(final @RequestBody InventoryRequestDto inventoryDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<InventoryResponseDto>>>
+        updateInventory(final @RequestBody InventoryRequestDto inventoryDto,
                                             final @PathVariable Long id) {
         return inventoryService.updateInventory(inventoryDto, id);
     }

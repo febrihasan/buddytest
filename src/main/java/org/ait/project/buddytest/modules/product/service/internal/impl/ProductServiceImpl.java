@@ -9,6 +9,7 @@ import org.ait.project.buddytest.modules.product.model.transform.ProductTransfor
 import org.ait.project.buddytest.modules.product.service.delegate.ProductDelegate;
 import org.ait.project.buddytest.modules.product.service.internal.ProductService;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
@@ -75,20 +76,25 @@ public class ProductServiceImpl implements ProductService {
      * @param id product
      * @return data product
      */
-    public ProductResponseDto getProductById(final Long id) {
-        return productTransform
-                .productToProductDto(productDelegate.getProductById(id));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+    getProductById(final Long id) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        productTransform
+                                .productToProductDto(productDelegate.getProductById(id)));
     }
 
     /**.
      * Create a new product
      * @param productDto product
      */
-    public ProductResponseDto createProduct(final ProductRequestDto productDto) {
-        Product product = productTransform
-                .productDtoToProduct(productDto);
-        return productTransform
-                .productToProductDto(productDelegate.save(product));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+    createProduct(final ProductRequestDto productDto) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        productTransform
+                                .productToProductDto(productDelegate.save(productTransform
+                                        .productDtoToProduct(productDto))));
     }
 
     /**.
@@ -97,15 +103,18 @@ public class ProductServiceImpl implements ProductService {
      * @param productDto payload product
      * @return data product
      */
-    public ProductResponseDto updateProduct(final ProductRequestDto productDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<ProductResponseDto>>>
+    updateProduct(final ProductRequestDto productDto,
                                     final Long id) {
         Product product = productTransform
                 .updateProductFromProductDto(
                         productDto,
                         productDelegate.getProductById(id));
         product.setId(id);
-        return productTransform
-                .productToProductDto(productDelegate.save(product));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        productTransform
+                                .productToProductDto(productDelegate.save(product)));
     }
 
     /**.

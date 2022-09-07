@@ -7,6 +7,7 @@ import org.ait.project.buddytest.modules.inventory.model.entity.Inventory;
 import org.ait.project.buddytest.modules.inventory.service.delegate.InventoryDelegate;
 import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponseDto;
+import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
 import org.ait.project.buddytest.modules.order.model.entity.OrderDetails;
 import org.ait.project.buddytest.modules.order.model.entity.Orders;
 import org.ait.project.buddytest.modules.order.model.transform.OrderDetailsTransform;
@@ -15,6 +16,7 @@ import org.ait.project.buddytest.modules.order.service.delegate.OrdersDelegate;
 import org.ait.project.buddytest.modules.order.service.internal.OrderDetailsService;
 import org.ait.project.buddytest.modules.product.service.delegate.ProductDelegate;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
@@ -80,10 +82,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
      * @param id
      * @return data order detail
      */
-    public OrderDetailsResponseDto getOrderDetailById(final Long orderId, final Long id) {
-        return orderDetailsTransform
-                .orderDetailsToOrderDetailsDto(orderDetailsDelegate
-                        .getOrderDetailById(id));
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+    getOrderDetailById(final Long orderId, final Long id) {
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        orderDetailsTransform
+                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate
+                                        .getOrderDetailById(id)));
     }
 
     /**.
@@ -92,7 +97,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
      * @param orderId
      * @return new data order detail
      */
-    public OrderDetailsResponseDto createOrderDetail(final OrderDetailsRequestDto orderDetailsDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+    createOrderDetail(final OrderDetailsRequestDto orderDetailsDto,
                                   final Long orderId) {
         OrderDetails orderDetail = orderDetailsTransform
                 .orderDetailsDtoToOrderDetails(orderDetailsDto);
@@ -100,8 +106,10 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         updateQuantity(orderDetail);
 
-        return orderDetailsTransform
-                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        orderDetailsTransform
+                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail)));
     }
 
     /**.
@@ -111,7 +119,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
      * @param id
      * @return data order detail
      */
-    public OrderDetailsResponseDto updateOrderDetail(final OrderDetailsRequestDto orderDetailDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+    updateOrderDetail(final OrderDetailsRequestDto orderDetailDto,
                                                      final Long orderId, final Long id) {
 
         OrderDetails detail = orderDetailsDelegate.getOrderDetailById(id);
@@ -145,8 +154,10 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         ordersDelegate.updateTotalAmount(totalAmount, order.getId());
 
-        return orderDetailsTransform
-                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail));
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        orderDetailsTransform
+                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail)));
     }
 
     /**.

@@ -9,6 +9,7 @@ import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponse
 import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
 import org.ait.project.buddytest.modules.order.service.internal.OrderDetailsService;
 import org.ait.project.buddytest.modules.order.service.internal.OrdersService;
+import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.springframework.data.domain.Pageable;
@@ -84,7 +85,8 @@ public class OrdersController {
     @Operation(summary = "Get order by id",
             description = "Retrieves a spesific order by id")
     @GetMapping(PathOrderAPIs.FIND_ONE)
-    public OrdersResponseDto getOrderById(final @PathVariable Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrdersResponseDto>>>
+        getOrderById(final @PathVariable Long id) {
         return ordersService.getOrderById(id);
     }
 
@@ -97,7 +99,8 @@ public class OrdersController {
     @Operation(summary = "Get order detail by id",
             description = "Retrieves a spesific order detail by id")
     @GetMapping(PathOrderAPIs.FIND_ONE_DETAIL)
-    public OrderDetailsResponseDto getOrderDetailById(final @PathVariable Long orderId, final @PathVariable Long id) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+        getOrderDetailById(final @PathVariable Long orderId, final @PathVariable Long id) {
         return orderDetailsService.getOrderDetailById(orderId, id);
     }
 
@@ -109,7 +112,8 @@ public class OrdersController {
     @Operation(summary = "Create new order",
             description = "Create a new order")
     @PostMapping(PathOrderAPIs.CREATE)
-    public OrdersResponseDto createOrder(final @RequestBody OrdersRequestDto orderDto) {
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrdersResponseDto>>>
+        createOrder(final @RequestBody OrdersRequestDto orderDto) {
         return ordersService.createOrder(orderDto);
     }
 
@@ -122,7 +126,8 @@ public class OrdersController {
     @Operation(summary = "Create new order detail",
             description = "Create a new order detail")
     @PostMapping(PathOrderAPIs.CREATE_DETAIL)
-    public OrderDetailsResponseDto createOrderDetail(final @RequestBody OrderDetailsRequestDto orderDetailDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+        createOrderDetail(final @RequestBody OrderDetailsRequestDto orderDetailDto,
                                   final @PathVariable Long orderId) {
         return orderDetailsService.createOrderDetail(orderDetailDto, orderId);
     }
@@ -136,7 +141,8 @@ public class OrdersController {
     @Operation(summary = "Update order",
             description = "Update a order")
     @PutMapping(PathOrderAPIs.UPDATE)
-    public OrdersResponseDto updateOrder(final @RequestBody OrdersRequestDto orderDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrdersResponseDto>>>
+        updateOrder(final @RequestBody OrdersRequestDto orderDto,
                                             final @PathVariable Long id) {
         return ordersService.updateOrder(orderDto, id);
     }
@@ -151,7 +157,8 @@ public class OrdersController {
     @Operation(summary = "Update order detail",
             description = "Update a order detail")
     @PutMapping(PathOrderAPIs.UPDATE_DETAIL)
-    public OrderDetailsResponseDto updateOrderDetail(final @RequestBody OrderDetailsRequestDto orderDetailDto,
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+        updateOrderDetail(final @RequestBody OrderDetailsRequestDto orderDetailDto,
                                                      final @PathVariable Long orderId, final @PathVariable Long id) {
         return orderDetailsService.updateOrderDetail(orderDetailDto, orderId, id);
     }

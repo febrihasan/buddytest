@@ -6,6 +6,7 @@ import org.ait.project.buddytest.modules.customer.model.entity.Customer;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface CustomerTransform {
