@@ -1,17 +1,18 @@
 package org.ait.project.buddytest.modules.inventory.model.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ait.project.buddytest.modules.customer.model.entity.Customer;
-import org.ait.project.buddytest.modules.product.model.entity.Product;
 import org.ait.project.buddytest.shared.constant.entities.BaseEntity;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-
 /**.
- * Class Entity Product
+ * Class Entity Inventory
  */
 @Data
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class Inventory extends BaseEntity {
     @Column(name = "product_id", nullable = false)
     private Long productId;
 
-    @Column(name = "available_quantity")
+    @Column(name = "available_quantity", precision = 15, scale = 2)
     private Long availableQuantity;
 
 }

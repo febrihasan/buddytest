@@ -1,10 +1,9 @@
 package org.ait.project.buddytest.modules.customer.service.delegate.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.modules.customer.exception.JPHNotFoundException;
+import org.ait.project.buddytest.modules.customer.exception.JPHCustomerNotFoundException;
 import org.ait.project.buddytest.modules.customer.model.entity.Customer;
 import org.ait.project.buddytest.modules.customer.model.repository.CustomerRepository;
 import org.ait.project.buddytest.modules.customer.service.delegate.CustomerDelegate;
@@ -32,7 +31,7 @@ public class CustomerDelegateImpl implements CustomerDelegate {
 
   @Override
   public Customer getCustomerById(final Long id) {
-    return repository.findById(id).orElseThrow(JPHNotFoundException::new);
+    return repository.findById(id).orElseThrow(JPHCustomerNotFoundException::new);
   }
 
   @Override

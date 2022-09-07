@@ -2,7 +2,7 @@ package org.ait.project.buddytest.modules.product.service.delegate.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.modules.product.exception.JPHNotFoundException;
+import org.ait.project.buddytest.modules.product.exception.JPHProductNotFoundException;
 import org.ait.project.buddytest.modules.product.model.entity.Product;
 import org.ait.project.buddytest.modules.product.model.repository.ProductRepository;
 import org.ait.project.buddytest.modules.product.service.delegate.ProductDelegate;
@@ -30,7 +30,7 @@ public class ProductDelegateImpl implements ProductDelegate {
 
   @Override
   public Product getProductById(final Long id) {
-    return repository.findById(id).orElseThrow(JPHNotFoundException::new);
+    return repository.findById(id).orElseThrow(JPHProductNotFoundException::new);
   }
 
   @Override

@@ -29,6 +29,4 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Query("update Inventory i set i.availableQuantity = ?1 where i.productId = ?2")
     void updateQuantity(Long remaining, Long productId);
 
-
-
 }

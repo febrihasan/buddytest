@@ -4,7 +4,11 @@ import org.ait.project.buddytest.modules.order.dto.request.OrdersRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
 import org.ait.project.buddytest.modules.order.model.entity.OrderDetails;
 import org.ait.project.buddytest.modules.order.model.entity.Orders;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 

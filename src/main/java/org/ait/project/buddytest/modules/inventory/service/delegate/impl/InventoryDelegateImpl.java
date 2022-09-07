@@ -1,15 +1,14 @@
 package org.ait.project.buddytest.modules.inventory.service.delegate.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.ait.project.buddytest.modules.inventory.exception.JPHNotFoundException;
+import org.ait.project.buddytest.modules.inventory.exception.JPHInventoryNotFoundException;
 import org.ait.project.buddytest.modules.inventory.model.entity.Inventory;
 import org.ait.project.buddytest.modules.inventory.model.repository.InventoryRepository;
 import org.ait.project.buddytest.modules.inventory.service.delegate.InventoryDelegate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**.
  * Class Inventory Delegate Implements
@@ -31,7 +30,7 @@ public class InventoryDelegateImpl implements InventoryDelegate {
 
   @Override
   public Inventory getInventoryById(final Long id) {
-    return repository.findById(id).orElseThrow(JPHNotFoundException::new);
+    return repository.findById(id).orElseThrow(JPHInventoryNotFoundException::new);
   }
 
   @Override

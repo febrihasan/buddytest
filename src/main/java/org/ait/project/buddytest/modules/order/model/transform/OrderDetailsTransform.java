@@ -4,7 +4,11 @@ import java.util.List;
 import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponseDto;
 import org.ait.project.buddytest.modules.order.model.entity.OrderDetails;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OrderDetailsTransform {

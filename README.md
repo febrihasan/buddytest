@@ -18,3 +18,10 @@ Validator|Spring validation| &check;|[Link](https://www.baeldung.com/spring-boot
 Utility |Lombok , Mapstruct | &check;| [Lombok](https://projectlombok.org/) [MapStruct](https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/)
 Documentation|Swagger / Postman Documentation | &cross;|[Swagger](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api) [Postman Docs](https://learning.postman.com/docs/publishing-your-api/documenting-your-api/)
 Auditing Database|Envers | &cross;| [Link](https://hibernate.org/orm/envers/)
+
+
+## `Running Instructions:`
+Via maven (spring boot)
+
+$ cd project/buddytest
+$ mvn spring-boot:run

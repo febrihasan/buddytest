@@ -7,7 +7,6 @@ import org.ait.project.buddytest.modules.inventory.model.entity.Inventory;
 import org.ait.project.buddytest.modules.inventory.service.delegate.InventoryDelegate;
 import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrderDetailsResponseDto;
-import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
 import org.ait.project.buddytest.modules.order.model.entity.OrderDetails;
 import org.ait.project.buddytest.modules.order.model.entity.Orders;
 import org.ait.project.buddytest.modules.order.model.transform.OrderDetailsTransform;
@@ -100,11 +99,22 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
     createOrderDetail(final OrderDetailsRequestDto orderDetailsDto,
                                   final Long orderId) {
+
         OrderDetails orderDetail = orderDetailsTransform
                 .orderDetailsDtoToOrderDetails(orderDetailsDto);
         orderDetail.setOrderId(orderId);
 
+        /*
+         * Update quantity stock in inventory
+         */
         updateQuantity(orderDetail);
+
+        /*
+         * Update total amount in orders
+         */
+        Orders order = ordersDelegate.getOrderById(orderId);
+        BigDecimal totalAmount = order.getAmount().add(orderDetail.getAmount());
+        ordersDelegate.updateTotalAmount(totalAmount, orderId);
 
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
@@ -125,17 +135,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         OrderDetails detail = orderDetailsDelegate.getOrderDetailById(id);
         Orders order = ordersDelegate.getOrderById(detail.getOrderId());
-        Inventory inventory = inventoryDelegate.getInventoryByProductId(detail.getProductId());
+        BigDecimal remainAmount = order.getAmount().subtract(detail.getAmount());
 
         /*
-         * Calculating quantity
+         * Revert quantity stock in inventory
          */
-        long quantity = inventory.getAvailableQuantity();
-        if (quantity == 0) {
-            productDelegate.updateStockProduct(Boolean.TRUE, detail.getProductId());
-        }
-        long remaining = quantity + detail.getQuantity();
-        inventoryDelegate.updateQuantity(remaining, detail.getProductId());
+        revertQuantity(detail);
 
         OrderDetails orderDetail = orderDetailsTransform
                 .updateOrderDetailsFromOrderDetailsDto(
@@ -143,15 +148,15 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
                         orderDetailsDelegate.getOrderDetailById(id));
         orderDetail.setId(id);
 
+        /*
+         * Update quantity stock in inventory
+         */
         updateQuantity(orderDetail);
 
-        LOGGER.info(" before: total amount {}", order.getAmount());
-        LOGGER.info(" before: detail amount {}", detail.getAmount());
-        BigDecimal remainAmount = order.getAmount().subtract(detail.getAmount());
-        LOGGER.info(" after: remain amount {}", remainAmount);
+        /*
+         * Update total amount in orders
+         */
         BigDecimal totalAmount = remainAmount.add(orderDetail.getAmount());
-        LOGGER.info(" after: total amount {}", totalAmount);
-
         ordersDelegate.updateTotalAmount(totalAmount, order.getId());
 
         return responseHelper
@@ -166,9 +171,42 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
      * @param id
      */
     public void deleteOrderDetail(final Long orderId, final Long id) {
+
+        OrderDetails detail = orderDetailsDelegate.getOrderDetailById(id);
+        Orders order = ordersDelegate.getOrderById(detail.getOrderId());
+
+        /*
+         * Revert quantity stock in inventory
+         */
+        revertQuantity(detail);
+
+        /*
+         * Update total amount in orders
+         */
+        BigDecimal remainAmount = order.getAmount().subtract(detail.getAmount());
+        ordersDelegate.updateTotalAmount(remainAmount, order.getId());
+
         orderDetailsDelegate.deleteById(id);
     }
 
+    /**.
+     * Revert quantity stock product in inventory
+     * @param orderDetail
+     */
+    private void revertQuantity(final OrderDetails orderDetail) {
+        Inventory inventory = inventoryDelegate.getInventoryByProductId(orderDetail.getProductId());
+        long quantity = inventory.getAvailableQuantity();
+        if (quantity == 0) {
+            productDelegate.updateStockProduct(Boolean.TRUE, orderDetail.getProductId());
+        }
+        long remaining = quantity + orderDetail.getQuantity();
+        inventoryDelegate.updateQuantity(remaining, orderDetail.getProductId());
+    }
+
+    /**.
+     * Update quantity stock product in inventory
+     * @param orderDetail
+     */
     private void updateQuantity(final OrderDetails orderDetail) {
         Inventory inventory = inventoryDelegate.getInventoryByProductId(orderDetail.getProductId());
         long quantity = inventory.getAvailableQuantity();
