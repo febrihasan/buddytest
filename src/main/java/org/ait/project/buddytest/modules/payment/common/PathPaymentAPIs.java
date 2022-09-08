@@ -11,6 +11,18 @@ public class PathPaymentAPIs {
     public static final String BASE_PAYMENT = "/payments";
 
     /**.
+     * Endpoint for find all data orders
+     * Method type GET
+     */
+    public static final String FIND_ALL = BASE_PAYMENT;
+
+    /**.
+     * Endpoint for find all data orders for pagination
+     * Method type GET
+     */
+    public static final String FIND_ALL_WITH_PAGE = BASE_PAYMENT + "/page";
+
+    /**.
      * Endpoint for create payment
      * Method type POST
      */

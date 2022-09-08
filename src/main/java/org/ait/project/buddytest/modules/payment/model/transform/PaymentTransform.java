@@ -9,11 +9,15 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PaymentTransform {
     Payment paymentDtoToPayment(PaymentRequestDto paymentDto);
 
     PaymentResponseDto paymentToPaymentDto(Payment payment);
+
+    List<PaymentResponseDto> paymentListToPaymentDtoList(List<Payment> paymentList);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Payment updatePaymentFromPaymentDto(PaymentRequestDto paymentDto, @MappingTarget Payment payment);

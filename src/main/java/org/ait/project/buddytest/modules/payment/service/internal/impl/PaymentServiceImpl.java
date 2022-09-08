@@ -2,6 +2,7 @@ package org.ait.project.buddytest.modules.payment.service.internal.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.buddytest.modules.payment.common.ResponseStatus;
 import org.ait.project.buddytest.modules.payment.dto.request.PaymentRequestDto;
@@ -13,12 +14,15 @@ import org.ait.project.buddytest.modules.payment.service.delegate.PaymentDelegat
 import org.ait.project.buddytest.modules.payment.service.internal.PaymentService;
 import org.ait.project.buddytest.shared.constant.enums.ResponseEnum;
 import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
+import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.openfeign.payment.PaymentClient;
 import org.ait.project.buddytest.shared.openfeign.payment.response.PostingPaymentResponse;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +51,35 @@ public class PaymentServiceImpl implements PaymentService {
      * Transform model mapper from entity to DTO or DTO to entity
      */
     private final PaymentTransform paymentTransform;
+
+    /**.
+     * Get all data customers
+     * @return all data customers
+     */
+    public ResponseEntity<ResponseTemplate<ResponseList<PaymentResponseDto>>>
+    getAllPayments() {
+        List<Payment> payments = paymentDelegate.getAllPayments();
+        return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null,
+                paymentTransform.paymentListToPaymentDtoList(payments));
+    }
+
+    /**.
+     * Get all data customers with page
+     * @param page number
+     * @return all data customers with pagination
+     */
+    public ResponseEntity<ResponseTemplate<ResponseList<PaymentResponseDto>>>
+    getAllPaymentsWithPage(final Pageable page) {
+        Page<Payment> paymentsWithPage = paymentDelegate
+                .getAllPaymentsWithPage(page);
+        return responseHelper
+                .createResponseCollection(
+                        ResponseEnum.SUCCESS,
+                        paymentsWithPage,
+                        paymentTransform
+                                .paymentListToPaymentDtoList(
+                                        paymentsWithPage.getContent()));
+    }
 
     /**.
      * Create a payment
@@ -126,12 +159,8 @@ public class PaymentServiceImpl implements PaymentService {
     public void cancelPayment(final String referenceNumber) {
         PostingPaymentResponse paymentResponse = paymentClient
                 .cancelPayment(referenceNumber);
-
-        if (paymentResponse.getStatus()
-                .equals(ResponseStatus.PROCESSED.toString())) {
-            paymentDelegate
-                    .updateStatusByReferenceNumber(ResponseStatus.CANCELLED.toString(), referenceNumber);
-        }
+        paymentDelegate
+                .updateStatusByReferenceNumber(ResponseStatus.CANCELLED.toString(), referenceNumber);
     }
 
 }

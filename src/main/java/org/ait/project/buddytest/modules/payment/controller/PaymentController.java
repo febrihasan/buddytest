@@ -2,12 +2,15 @@ package org.ait.project.buddytest.modules.payment.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.ait.project.buddytest.modules.order.common.PathOrderAPIs;
 import org.ait.project.buddytest.modules.payment.common.PathPaymentAPIs;
 import org.ait.project.buddytest.modules.payment.dto.request.PaymentRequestDto;
 import org.ait.project.buddytest.modules.payment.dto.response.PaymentResponseDto;
 import org.ait.project.buddytest.modules.payment.service.internal.PaymentService;
 import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
+import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,31 @@ public class PaymentController {
      *  Get function Payment Service
      */
     private final PaymentService paymentService;
+
+    /**.
+     *  Api for Get all payments
+     * @return all data payments
+     */
+    @Operation(summary = "Get all payments",
+            description = "Retrieve a list of all payments")
+    @GetMapping(PathPaymentAPIs.FIND_ALL)
+    public ResponseEntity<ResponseTemplate<ResponseList<PaymentResponseDto>>>
+        getAllPayments() {
+        return paymentService.getAllPayments();
+    }
+
+    /**.
+     *  Api for Get all payments with page
+     * @param page number
+     * @return all data payments with pagination
+     */
+    @Operation(summary = "Get all orders by page",
+            description = "Retrieves a list of all orders with pagination")
+    @GetMapping(PathPaymentAPIs.FIND_ALL_WITH_PAGE)
+    public ResponseEntity<ResponseTemplate<ResponseList<PaymentResponseDto>>>
+        getAllPaymentsWithPage(final Pageable page) {
+        return paymentService.getAllPaymentsWithPage(page);
+    }
 
     /**.
      *  Api for create payment
