@@ -76,8 +76,6 @@ public class PaymentServiceImpl implements PaymentService {
         PostingPaymentResponse paymentResponse = paymentClient
                 .previewPayment(referenceNumber);
 
-        LOGGER.info("preview payment : {}", paymentResponse);
-
         Payment payment = null;
         if (paymentResponse.getStatus() == null) {
             payment = paymentDelegate
@@ -101,10 +99,11 @@ public class PaymentServiceImpl implements PaymentService {
 
         String statusPayment = "";
         if (payment.getStatus()
-                .equals(ResponseStatus.PENDING.toString())) {
+                .equals(ResponseStatus.PROCESSED.toString())) {
             PostingPaymentResponse paymentResponse = paymentClient
                     .postingPayment(PaymentClientTransform.convert(payment));
 
+            LOGGER.info("payment response : status {}", paymentResponse.getStatus());
             if (paymentResponse.getStatus()
                     .equals(ResponseStatus.CANCELLED.toString())) {
                 statusPayment = ResponseStatus.CANCELLED.toString();

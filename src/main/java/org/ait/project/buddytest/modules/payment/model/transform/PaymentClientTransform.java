@@ -5,13 +5,15 @@ import org.ait.project.buddytest.shared.openfeign.payment.request.PostingPayment
 
 public class PaymentClientTransform {
 
+    PaymentClientTransform() {}
+
     public static PostingPaymentRequest convert(final Payment payment) {
         PostingPaymentRequest paymentRequest = new PostingPaymentRequest();
         paymentRequest.setReferenceNumber(payment.getReferenceNumber());
         paymentRequest.setSourceAccount(payment.getSourceAccount());
         paymentRequest.setSenderName(payment.getSenderName());
         paymentRequest.setSenderBankCode(payment.getSenderBankCode());
-        paymentRequest.setReceiverBankName(payment.getSenderBankName());
+        paymentRequest.setSenderBankName(payment.getSenderBankName());
         paymentRequest.setTargetAccount(payment.getTargetAccount());
         paymentRequest.setReceiverName(payment.getReceiverName());
         paymentRequest.setReceiverBankCode(payment.getReceiverBankCode());

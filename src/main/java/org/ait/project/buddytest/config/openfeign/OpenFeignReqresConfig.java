@@ -11,7 +11,6 @@ public class OpenFeignReqresConfig {
   @Bean
   public RequestInterceptor requestInterceptor() {
     return requestTemplate -> {
-      requestTemplate.header("secret_key", "example");
       requestTemplate.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
     };
   }

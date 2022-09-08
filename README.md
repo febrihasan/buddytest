@@ -25,7 +25,3 @@ Via maven (spring boot)
 
 $ cd project/buddytest
 $ mvn spring-boot:run
-
-
-## `Mock Server from Postman`
-https://www.postman.com/bold-comet-212910/workspace/api-tester/documentation/1078111-3e3afcec-ef2a-418a-82ba-13d122c7d776
