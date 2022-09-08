@@ -2,9 +2,9 @@
 <project version="4">
   <component name="PersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit name="guideline">
+      <persistence-unit name="buddytest">
         <packages>
-          <package value="org.ait.project.guideline.example" />
+          <package value="org.ait.project.buddytest" />
         </packages>
       </persistence-unit>
     </persistence-units>

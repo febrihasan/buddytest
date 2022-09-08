@@ -8,6 +8,6 @@ ADD . $HOME
 RUN mvn package -DskipTests
 
 FROM openjdk:8-jdk
-COPY --from=build /usr/app/target/*.jar /app/example.jar
+COPY --from=build /usr/app/target/*.jar /app/buddytest.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/example.jar"]
