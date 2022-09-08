@@ -86,7 +86,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
                         orderDetailsTransform
-                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate
+                                .orderDetailToOrderDetailDto(orderDetailsDelegate
                                         .getOrderDetailById(id)));
     }
 
@@ -102,6 +102,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         OrderDetails orderDetail = orderDetailsTransform
                 .orderDetailsDtoToOrderDetails(orderDetailsDto);
+
+        Inventory inventory = inventoryDelegate.getInventoryByProductId(orderDetail.getProductId());
+        if (inventory.getAvailableQuantity() == 0) {
+            return responseHelper.createResponseDetail(ResponseEnum.OUT_OF_STOCK,
+                    orderDetailsTransform.orderDetailToOrderDetailDto(orderDetail));
+        }
+
         orderDetail.setOrderId(orderId);
 
         /*
@@ -119,7 +126,32 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
                         orderDetailsTransform
-                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail)));
+                                .orderDetailToOrderDetailDto(orderDetailsDelegate.save(orderDetail)));
+    }
+
+    /**.
+     * Create a new order detail
+     * @param orderDetailsDto
+     * @param orderId
+     * @return new data order detail
+     */
+    public ResponseEntity<ResponseTemplate<ResponseDetail<OrderDetailsResponseDto>>>
+    createOrderDetailByOrders(final OrderDetailsRequestDto orderDetailsDto,
+                      final Long orderId) {
+
+        OrderDetails orderDetail = orderDetailsTransform
+                .orderDetailsDtoToOrderDetails(orderDetailsDto);
+        orderDetail.setOrderId(orderId);
+
+        /*
+         * Update quantity stock in inventory
+         */
+        updateQuantity(orderDetail);
+
+        return responseHelper
+                .createResponseDetail(ResponseEnum.SUCCESS,
+                        orderDetailsTransform
+                                .orderDetailToOrderDetailDto(orderDetailsDelegate.save(orderDetail)));
     }
 
     /**.
@@ -162,7 +194,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
                         orderDetailsTransform
-                                .orderDetailsToOrderDetailsDto(orderDetailsDelegate.save(orderDetail)));
+                                .orderDetailToOrderDetailDto(orderDetailsDelegate.save(orderDetail)));
     }
 
     /**.

@@ -14,9 +14,11 @@ import org.mapstruct.ReportingPolicy;
 public interface OrderDetailsTransform {
     OrderDetails orderDetailsDtoToOrderDetails(OrderDetailsRequestDto orderDetailsDto);
 
-    OrderDetailsResponseDto orderDetailsToOrderDetailsDto(OrderDetails orderDetails);
+    OrderDetailsResponseDto orderDetailToOrderDetailDto(OrderDetails orderDetails);
 
     List<OrderDetailsResponseDto> orderDetailsToOrderDetailsDto(List<OrderDetails> orderDetails);
+
+    List<OrderDetailsResponseDto> createOrderDetailsDto(List<OrderDetailsRequestDto> orderDetailsRequestDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     OrderDetails updateOrderDetailsFromOrderDetailsDto(OrderDetailsRequestDto orderDetailsDto, @MappingTarget OrderDetails orderDetails);

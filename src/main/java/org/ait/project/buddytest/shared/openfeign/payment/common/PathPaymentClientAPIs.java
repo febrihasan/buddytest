@@ -20,12 +20,12 @@ public class PathPaymentClientAPIs {
      * Endpoint for preview / check status payment by reference number
      * Method type GET
      */
-    public static final String PREVIEW = BASE_PAYMENT +  "/preview/{referenceNumber}";
+    public static final String PREVIEW = BASE_PAYMENT +  "/preview";
 
     /**.
      * Endpoint for cancel payment by reference_number
      * Method type DELETE
      */
-    public static final String CANCEL = BASE_PAYMENT + "/cancel/{referenceNumber}";
+    public static final String CANCEL = BASE_PAYMENT + "/cancel";
 
 }

@@ -11,18 +11,33 @@ public class PaymentClientFallback implements PaymentClient {
    * When Openfeign Call failed, then do this
    */
 
+  /**.
+   * Posting payment to api external
+   * @param paymentRequest
+   * @return data payment
+   */
   @Override
-  public PostingPaymentResponse postingPayment(PostingPaymentRequest paymentRequest) {
-    return null;
+  public PostingPaymentResponse postingPayment(final PostingPaymentRequest paymentRequest) {
+    return new PostingPaymentResponse();
   }
 
+  /**.
+   * Preview payment to api external
+   * @param referenceNumber
+   * @return data payment
+   */
   @Override
-  public PostingPaymentResponse previewPayment(String referenceNumber) {
-    return null;
+  public PostingPaymentResponse previewPayment(final String referenceNumber) {
+    return new PostingPaymentResponse();
   }
 
+  /**.
+   * Cancel payment to api external
+   * @param referenceNumber
+   * @return data payment
+   */
   @Override
-  public PostingPaymentResponse cancelPayment(String referenceNumber) {
-    return null;
+  public PostingPaymentResponse cancelPayment(final String referenceNumber) {
+    return new PostingPaymentResponse();
   }
 }

@@ -1,7 +1,12 @@
 package org.ait.project.buddytest.modules.order.service.internal.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.ait.project.buddytest.modules.inventory.model.entity.Inventory;
+import org.ait.project.buddytest.modules.inventory.service.delegate.InventoryDelegate;
+import org.ait.project.buddytest.modules.order.dto.request.OrderDetailsRequestDto;
 import org.ait.project.buddytest.modules.order.dto.request.OrdersRequestDto;
 import org.ait.project.buddytest.modules.order.dto.response.OrdersResponseDto;
 import org.ait.project.buddytest.modules.order.model.entity.Orders;
@@ -16,6 +21,8 @@ import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseList;
 import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +34,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
+
+    private static final Logger LOGGER = LogManager.getLogger(OrdersServiceImpl.class);
 
     /**.
      * Get function OrdersHelper
@@ -42,6 +51,11 @@ public class OrdersServiceImpl implements OrdersService {
      * Get function OrderDetailsDelegate
      */
     private final OrderDetailsDelegate orderDetailsDelegate;
+
+    /**.
+     * Get function InventoryDelegate
+     */
+    private final InventoryDelegate inventoryDelegate;
 
     /**.
      * Get function OrderDetailsService
@@ -112,17 +126,39 @@ public class OrdersServiceImpl implements OrdersService {
      */
     public ResponseEntity<ResponseTemplate<ResponseDetail<OrdersResponseDto>>>
     createOrder(final OrdersRequestDto ordersDto) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-hhmmss");
+
         Orders orders = ordersTransform.ordersDtoToOrders(ordersDto);
-        Orders order = ordersDelegate.save(orders);
-        ordersDto.getOrderDetails()
-                .forEach(orderDetailsDto ->
-                    orderDetailsService
-                        .createOrderDetail(orderDetailsDto, order.getId()));
+        orders.setOrderNumber("ORD-" + sdf.format(new Date()));
+
+        boolean outOfStock = false;
+        for (OrderDetailsRequestDto detail : ordersDto.getOrderDetails()) {
+            Inventory inventory = inventoryDelegate.getInventoryByProductId(detail.getProductId());
+            if (inventory.getAvailableQuantity() == 0) {
+                outOfStock = true;
+                break;
+            }
+        }
+
+        Orders order;
+        if (!outOfStock) {
+            order = ordersDelegate.save(orders);
+            ordersDto.getOrderDetails()
+                    .forEach(detail ->
+                            orderDetailsService
+                                    .createOrderDetailByOrders(detail, order.getId()));
+        } else {
+            OrdersResponseDto responseDto = ordersTransform.orderToOrderDto(orders);
+            responseDto.setOrderDetails(orderDetailsTransform
+                    .createOrderDetailsDto(ordersDto.getOrderDetails()));
+            return responseHelper.createResponseDetail(ResponseEnum.OUT_OF_STOCK,
+                    responseDto);
+        }
 
         OrdersResponseDto ordersResponseDto = ordersTransform.orderToOrderDto(orders);
         ordersResponseDto.setOrderDetails(orderDetailsTransform
                 .orderDetailsToOrderDetailsDto(orderDetailsDelegate
-                        .getAllOrderDetails(ordersResponseDto.getId())));
+                        .getAllOrderDetails(order.getId())));
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS, ordersResponseDto);
     }

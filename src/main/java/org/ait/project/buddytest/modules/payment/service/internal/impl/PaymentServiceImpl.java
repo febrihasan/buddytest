@@ -17,6 +17,8 @@ import org.ait.project.buddytest.shared.dto.template.ResponseTemplate;
 import org.ait.project.buddytest.shared.openfeign.payment.PaymentClient;
 import org.ait.project.buddytest.shared.openfeign.payment.response.PostingPaymentResponse;
 import org.ait.project.buddytest.shared.utils.ResponseHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
+
+    private static final Logger LOGGER = LogManager.getLogger(PaymentServiceImpl.class);
 
     /**.
      * Get function ResponseHelper
@@ -56,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         Payment payment = paymentTransform.paymentDtoToPayment(paymentDto);
         payment.setReferenceNumber("FT" + sdf.format(new Date()));
-        payment.setStatus(ResponseStatus.PENDING.toString());
+        payment.setStatus(ResponseStatus.PROCESSED.toString());
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
                         paymentTransform.paymentToPaymentDto(paymentDelegate.save(payment)));
@@ -68,10 +72,21 @@ public class PaymentServiceImpl implements PaymentService {
      */
     public ResponseEntity<ResponseTemplate<ResponseDetail<PaymentResponseDto>>>
     previewPayment(final String referenceNumber) {
+
+        PostingPaymentResponse paymentResponse = paymentClient
+                .previewPayment(referenceNumber);
+
+        LOGGER.info("preview payment : {}", paymentResponse);
+
+        Payment payment = null;
+        if (paymentResponse.getStatus() == null) {
+            payment = paymentDelegate
+                    .getPaymentByReferenceNumber(referenceNumber);
+        }
+
         return responseHelper
                 .createResponseDetail(ResponseEnum.SUCCESS,
-                        paymentTransform.paymentToPaymentDto(paymentDelegate
-                                .getPaymentByReferenceNumber(referenceNumber)));
+                        paymentTransform.paymentToPaymentDto(payment));
     }
 
     /**.
@@ -85,14 +100,16 @@ public class PaymentServiceImpl implements PaymentService {
                 .getPaymentByReferenceNumber(referenceNumber);
 
         String statusPayment = "";
-        if (payment.getStatus().equals(ResponseStatus.PENDING)) {
+        if (payment.getStatus()
+                .equals(ResponseStatus.PENDING.toString())) {
             PostingPaymentResponse paymentResponse = paymentClient
                     .postingPayment(PaymentClientTransform.convert(payment));
 
-            if (paymentResponse.getStatus().equals(ResponseStatus.SUCCESS)) {
-                statusPayment = ResponseStatus.SUCCESS.toString();
+            if (paymentResponse.getStatus()
+                    .equals(ResponseStatus.CANCELLED.toString())) {
+                statusPayment = ResponseStatus.CANCELLED.toString();
             } else {
-                statusPayment = ResponseStatus.CANCEL.toString();
+                statusPayment = ResponseStatus.SUCCEED.toString();
             }
         }
 
@@ -108,8 +125,14 @@ public class PaymentServiceImpl implements PaymentService {
      * @param referenceNumber
      */
     public void cancelPayment(final String referenceNumber) {
-        paymentDelegate
-                .updateStatusByReferenceNumber(ResponseStatus.CANCEL.toString(), referenceNumber);
+        PostingPaymentResponse paymentResponse = paymentClient
+                .cancelPayment(referenceNumber);
+
+        if (paymentResponse.getStatus()
+                .equals(ResponseStatus.PROCESSED.toString())) {
+            paymentDelegate
+                    .updateStatusByReferenceNumber(ResponseStatus.CANCELLED.toString(), referenceNumber);
+        }
     }
 
 }

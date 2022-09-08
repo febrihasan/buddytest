@@ -1,5 +1,4 @@
 #Default Properties
-
 server:
   servlet:
     context-path: /api
@@ -14,6 +13,10 @@ spring:
     enabled: false
   jackson:
     time-zone: Asia/Jakarta
+
+# actuator / health check
+springdoc:
+  show-actuator: true
 
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
