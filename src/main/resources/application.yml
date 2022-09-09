@@ -1,9 +1,18 @@
 #Default Properties
 server:
+  port: 8080
   servlet:
     context-path: /api
 
 spring:
+  #application name
+  application:
+    name: buddy-test
+  #monitor web admin
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
   #profile active
   #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
   profiles:
@@ -13,10 +22,6 @@ spring:
     enabled: false
   jackson:
     time-zone: Asia/Jakarta
-
-# actuator / health check
-springdoc:
-  show-actuator: true
 
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:

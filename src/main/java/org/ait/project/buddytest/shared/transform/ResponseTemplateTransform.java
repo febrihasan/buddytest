@@ -1,9 +1,7 @@
 package org.ait.project.buddytest.shared.transform;
 
-
 import java.util.List;
 import java.util.Optional;
-
 import org.ait.project.buddytest.shared.dto.template.PaginationConfig;
 import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseSchema;

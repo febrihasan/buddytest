@@ -1,7 +1,6 @@
 package org.ait.project.buddytest.shared.utils;
 
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.ait.project.buddytest.shared.dto.template.ResponseDetail;
 import org.ait.project.buddytest.shared.dto.template.ResponseError;

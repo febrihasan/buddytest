@@ -15,31 +15,49 @@
     <description>AIT - Buddy Test</description>
     <properties>
         <java.version>1.8</java.version>
+        <lombok.version>1.18.24</lombok.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <org.mapstruct-binding.version>0.2.0</org.mapstruct-binding.version>
+        <org.zalando.version>2.14.0</org.zalando.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <spring-boot-admin.version>2.7.4</spring-boot-admin.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <spring-maven-plugin.version>2.7.3</spring-maven-plugin.version>
         <springdoc-openapi.version>1.6.11</springdoc-openapi.version>
     </properties>
+
     <dependencies>
 
-        <!--	Spring	-->
+        <!-- [BEGIN] Spring and Spring Boot Dependencies -->
+        <!-- [BEGIN] Spring Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+        <!-- [END] Spring Actuator -->
+
+        <!-- [BEGIN] Spring Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- [END] Spring Web -->
+
+        <!-- [BEGIN] Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- [END] Spring Data JPA -->
+
+        <!-- [BEGIN] Spring Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <!-- [END] Spring Validation -->
 
-        <!-- Spring Documentation support Swagger UI and Javadoc -->
+        <!-- [BEGIN] Spring Documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -50,54 +68,83 @@
             <artifactId>springdoc-openapi-javadoc</artifactId>
             <version>${springdoc-openapi.version}</version>
         </dependency>
+        <!-- [END] Spring Documentation -->
 
-        <!--	Spring	-->
-		
-		<!--	Spring OpenFeign Bundle	-->
+        <!-- [BEGIN] Spring OpenFeign -->
         <dependency>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>3.0.4</version>
         </dependency>
-        <dependency>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-          <version>2.2.10.RELEASE</version>
-        </dependency>
-		<!--	Spring OpenFeign Bundle	-->
+        <!-- [END] Spring OpenFeign -->
 
-        <!--	Database driver	-->
+        <!-- [BEGIN] Spring Hystrix -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>2.2.10.RELEASE</version>
+        </dependency>
+        <!-- [END] Spring Hystrix -->
+
+        <!-- [BEGIN] Spring Admin for Client -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+        </dependency>
+        <!-- [END] Spring Admin for Client -->
+
+        <!-- [BEGIN] Spring Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- [END] Spring Test -->
+        <!-- [END] Spring and Spring Boot Dependencies -->
+
+        <!-- [BEGIN] Database Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--		-->
+        <!-- [END] Database Driver -->
 
-        <!--	required	-->
+        <!-- Required -->
+        <!-- [BEGIN] Flyway Migration -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+        <!-- [END] Flyway Migration -->
+
+        <!-- [BEGIN] Mapstruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+        <!-- [END] Mapstruct -->
+
+        <!-- [BEGIN] Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- [END] Lombok -->
+
+        <!-- [BEGIN] Zalando -->
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>logbook-spring-boot-starter</artifactId>
-            <version>2.14.0</version>
+            <version>${org.zalando.version}</version>
         </dependency>
+        <!-- [END] Zalando -->
+        <!-- Required -->
 
-        <!--	required	-->
-
-        <!--   additional     -->
+        <!-- Additional -->
+        <!-- [BEGIN] JSON Web Token -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -115,13 +162,9 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
-        <!--   additional     -->
+        <!-- [END] JSON Web Token -->
+        <!-- Additional -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -140,14 +183,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.7.3</version>
+                <version>${spring-maven-plugin.version}</version>
             </plugin>
 
 <!--    Integrated Mapstruct  With Lombok         -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
@@ -163,7 +206,7 @@
                         <dependency>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
+                            <version>${org.mapstruct-binding.version}</version>
                         </dependency>
                     </annotationProcessorPaths>
                 </configuration>
