@@ -4,6 +4,7 @@ import org.ait.project.buddytest.shared.openfeign.payment.common.PathPaymentClie
 import org.ait.project.buddytest.shared.openfeign.payment.request.PostingPaymentRequest;
 import org.ait.project.buddytest.shared.openfeign.payment.response.PostingPaymentResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,15 +24,15 @@ public interface PaymentClient {
    * @return response payment
    */
   @PostMapping(PathPaymentClientAPIs.POSTING)
-  PostingPaymentResponse postingPayment(@RequestBody PostingPaymentRequest paymentRequest);
+  String postingPayment(@RequestBody PostingPaymentRequest paymentRequest);
 
   /**.
    * Api external for preview / check status payment
    * @param referenceNumber
    * @return response payment
    */
-  @GetMapping(PathPaymentClientAPIs.PREVIEW)
-  PostingPaymentResponse previewPayment(@PathVariable String referenceNumber);
+  @PostMapping(value = PathPaymentClientAPIs.PREVIEW)
+  String previewPayment(@PathVariable String referenceNumber);
 
   /**.
    * Api external for cancel payment
@@ -39,5 +40,5 @@ public interface PaymentClient {
    * @return response payment
    */
   @DeleteMapping(PathPaymentClientAPIs.CANCEL)
-  PostingPaymentResponse cancelPayment(@PathVariable String referenceNumber);
+  String cancelPayment(@PathVariable String referenceNumber);
 }

@@ -12,6 +12,7 @@ public class OpenFeignReqresConfig {
   public RequestInterceptor requestInterceptor() {
     return requestTemplate -> {
       requestTemplate.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+      requestTemplate.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
     };
   }
 }

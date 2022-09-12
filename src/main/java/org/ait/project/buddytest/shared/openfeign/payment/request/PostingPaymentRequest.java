@@ -1,13 +1,14 @@
 package org.ait.project.buddytest.shared.openfeign.payment.request;
 
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostingPaymentRequest {
 
   @JsonProperty("referenceNumber")

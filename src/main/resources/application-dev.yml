@@ -2,7 +2,7 @@
 restclient:
   url:
     jsonplaceholder-client: https://jsonplaceholder.typicode.com
-    payment-client: https://afa39192-d126-42c7-8e53-497c1bbb5cfb.mock.pstmn.io
+    payment-client: https://buddy-test.mocklab.io/api
     reqres-client: https://reqres.in/api
 
 spring:

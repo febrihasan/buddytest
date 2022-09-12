@@ -8,13 +8,13 @@ public class PathPaymentClientAPIs {
     /**.
     * Base endpoint for payment client
     */
-    public static final String BASE_PAYMENT = "/api/buddytest";
+    public static final String BASE_PAYMENT = "/payment";
 
     /**.
      * Endpoint for posting payment
      * Method type POST
      */
-    public static final String POSTING = BASE_PAYMENT + "/payment";
+    public static final String POSTING = BASE_PAYMENT + "/posting";
 
     /**.
      * Endpoint for preview / check status payment by reference number

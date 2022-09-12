@@ -2,7 +2,14 @@ package org.ait.project.buddytest.modules.payment.service.internal.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.buddytest.modules.payment.common.ResponseStatus;
 import org.ait.project.buddytest.modules.payment.dto.request.PaymentRequestDto;
@@ -106,11 +113,16 @@ public class PaymentServiceImpl implements PaymentService {
     public ResponseEntity<ResponseTemplate<ResponseDetail<PaymentResponseDto>>>
     previewPayment(final String referenceNumber) {
 
-        PostingPaymentResponse paymentResponse = paymentClient
+        String paymentResponse = paymentClient
                 .previewPayment(referenceNumber);
 
+        /*
+         * Convert from response to map
+         */
+        Map<String, Object> mapper = convert(paymentResponse);
+
         Payment payment = null;
-        if (paymentResponse.getStatus() == null) {
+        if (!mapper.get("status").toString().isEmpty()) {
             payment = paymentDelegate
                     .getPaymentByReferenceNumber(referenceNumber);
         }
@@ -133,14 +145,20 @@ public class PaymentServiceImpl implements PaymentService {
         String statusPayment = "";
         if (payment.getStatus()
                 .equals(ResponseStatus.PROCESSED.toString())) {
-            PostingPaymentResponse paymentResponse = paymentClient
+            String paymentResponse = paymentClient
                     .postingPayment(PaymentClientTransform.convert(payment));
 
-            LOGGER.info("payment response : status {}", paymentResponse.getStatus());
-            if (paymentResponse.getStatus()
-                    .equals(ResponseStatus.CANCELLED.toString())) {
+            /*
+             * Convert from response to map
+             */
+            Map<String, Object> mapper = convert(paymentResponse);
+
+            if (mapper.get("status").toString()
+                    .equals(ResponseStatus.FAILED.toString())) {
+                payment.setStatus(ResponseStatus.CANCELLED.toString());
                 statusPayment = ResponseStatus.CANCELLED.toString();
             } else {
+                payment.setStatus(ResponseStatus.SUCCEED.toString());
                 statusPayment = ResponseStatus.SUCCEED.toString();
             }
         }
@@ -157,10 +175,31 @@ public class PaymentServiceImpl implements PaymentService {
      * @param referenceNumber
      */
     public void cancelPayment(final String referenceNumber) {
-        PostingPaymentResponse paymentResponse = paymentClient
+        String paymentResponse = paymentClient
                 .cancelPayment(referenceNumber);
-        paymentDelegate
-                .updateStatusByReferenceNumber(ResponseStatus.CANCELLED.toString(), referenceNumber);
+
+        /*
+         * Convert from response to map
+         */
+        Map<String, Object> mapper = convert(paymentResponse);
+
+        if (mapper.get("status").toString()
+                .equals(ResponseStatus.FAILED.toString())) {
+            paymentDelegate
+                    .updateStatusByReferenceNumber(ResponseStatus.CANCELLED.toString(), referenceNumber);
+        }
+    }
+
+    private Map<String, Object> convert(final String response) {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            map = mapper.readValue(response, Map.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return map;
     }
 
 }

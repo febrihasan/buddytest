@@ -23,6 +23,16 @@ spring:
   jackson:
     time-zone: Asia/Jakarta
 
+#actuator / management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
   format:

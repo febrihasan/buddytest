@@ -17,8 +17,8 @@ public class PaymentClientFallback implements PaymentClient {
    * @return data payment
    */
   @Override
-  public PostingPaymentResponse postingPayment(final PostingPaymentRequest paymentRequest) {
-    return new PostingPaymentResponse();
+  public String postingPayment(final PostingPaymentRequest paymentRequest) {
+    return new String();
   }
 
   /**.
@@ -27,8 +27,8 @@ public class PaymentClientFallback implements PaymentClient {
    * @return data payment
    */
   @Override
-  public PostingPaymentResponse previewPayment(final String referenceNumber) {
-    return new PostingPaymentResponse();
+  public String previewPayment(final String referenceNumber) {
+    return new String();
   }
 
   /**.
@@ -37,7 +37,7 @@ public class PaymentClientFallback implements PaymentClient {
    * @return data payment
    */
   @Override
-  public PostingPaymentResponse cancelPayment(final String referenceNumber) {
-    return new PostingPaymentResponse();
+  public String cancelPayment(final String referenceNumber) {
+    return new String();
   }
 }
